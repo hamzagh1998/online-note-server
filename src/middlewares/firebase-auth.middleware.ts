@@ -5,12 +5,7 @@ import * as admin from 'firebase-admin';
 @Injectable()
 export class FirebaseAuthMiddleware implements NestMiddleware {
   async use(req: Request, res: Response, next: NextFunction) {
-    if (!req.headers.authorization) {
-      return res.status(401).json({ error: true, message: 'Unauthorized' });
-    }
-
-    const authorizationHeader = req.headers.authorization.split(' ')[1];
-
+    const authorizationHeader = req.headers.authorization;
     if (!authorizationHeader) {
       return res.status(401).json({ error: true, message: 'Unauthorized' });
     }

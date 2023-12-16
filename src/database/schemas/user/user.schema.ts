@@ -8,7 +8,10 @@ export class User {
   firstName: string;
 
   @Prop()
-  lastNale: string;
+  lastName: string;
+
+  @Prop()
+  photoURL: string;
 
   @Prop()
   email: string;

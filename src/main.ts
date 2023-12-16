@@ -14,6 +14,9 @@ async function bootstrap() {
     credential: admin.credential.cert(firebaseConfig),
   });
 
+  // Set a global prefix for all routes
+  app.setGlobalPrefix('api/v1');
+
   await app.listen(configService.get<number>('PORT'));
 }
 bootstrap();

@@ -1,9 +1,10 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 
 import { configuration } from './configuration';
 import { AuthModule } from './api/v1/auth/auth.module';
+import { FirebaseAuthMiddleware } from './middlewares/firebase-auth.middleware';
 
 @Module({
   imports: [
@@ -17,4 +18,9 @@ import { AuthModule } from './api/v1/auth/auth.module';
     AuthModule,
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    // Apply FirebaseAuthMiddleware to all routes
+    consumer.apply(FirebaseAuthMiddleware).forRoutes('*');
+  }
+}

@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsEmail, IsIn } from 'class-validator';
 
-export class RegisterRequestDto {
+export class RegisterRequestBodyDto {
   @IsNotEmpty()
   firstName: string;
 

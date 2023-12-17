@@ -6,8 +6,13 @@ import * as admin from 'firebase-admin';
 export class FirebaseAuthMiddleware implements NestMiddleware {
   async use(req: Request, res: Response, next: NextFunction) {
     const authorizationHeader = req.headers.authorization;
+    const errorResBody = {
+      error: true,
+      message: 'Unauthorized user token is missing!',
+    };
+
     if (!authorizationHeader) {
-      return res.status(401).json({ error: true, message: 'Unauthorized' });
+      return res.status(401).json(errorResBody);
     }
 
     const token = authorizationHeader.split(' ')[1];
@@ -17,7 +22,7 @@ export class FirebaseAuthMiddleware implements NestMiddleware {
       req['user'] = decodedToken; // Attach the decoded user to the request
       next();
     } catch (error) {
-      return res.status(401).json({ error: true, message: 'Unauthorized' });
+      return res.status(401).json(errorResBody);
     }
   }
 }

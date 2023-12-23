@@ -5,8 +5,9 @@ import { UserDocument } from 'src/database/schemas/user/user.schema';
 import { UserRepository } from 'src/database/schemas/user/user.repository';
 
 import { RegisterRequestBodyDto } from '../dto/register-user.req';
+import { LoginRequestBodyDto } from '../dto/login-user.req';
 
-import { RegistedrUserDetailType } from '../types/register-user.type';
+import { RegistredUserDetailType } from '../types/auth.types';
 
 @Injectable()
 export class AuthService {
@@ -22,7 +23,7 @@ export class AuthService {
       const isEmailExists = await this.userRepo.findOne({ email });
       if (isEmailExists)
         return {
-          error: false,
+          error: true,
           statusCode: HttpStatus.CONFLICT,
           detail: 'User with this email already exists',
         };
@@ -31,7 +32,7 @@ export class AuthService {
         photoURL: avatar,
       })) as UserDocument;
 
-      const result: RegistedrUserDetailType = {
+      const result: RegistredUserDetailType = {
         firstName: userData.firstName,
         lastName: userData.lastName,
         email: userData.email,
@@ -45,5 +46,28 @@ export class AuthService {
         detail: 'Internal server error!',
       };
     }
+  }
+
+  async login(body: LoginRequestBodyDto | RegisterRequestBodyDto) {
+    const { email, provider } = body;
+    const user = await this.userRepo.findOne({ email });
+    if (!user) {
+      if (provider === 'google') {
+        return this.register(body as RegisterRequestBodyDto);
+      }
+      return {
+        error: true,
+        statusCode: HttpStatus.CONFLICT,
+        detail: "User with this email doesn't",
+      };
+    }
+
+    const result: RegistredUserDetailType = {
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      photoURL: user.photoURL,
+    };
+    return { error: false, statusCode: HttpStatus.OK, detail: result };
   }
 }

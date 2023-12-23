@@ -2,7 +2,7 @@ import { HttpStatus } from '@nestjs/common';
 
 import { RegisterRequestBodyDto } from '../../dto/register-user.req';
 
-import { RegisterResponseType } from '../../types/register-user.type';
+import { RegisterResponseType } from '../../types/auth.types';
 
 export function registerReqStub(): RegisterRequestBodyDto {
   return {

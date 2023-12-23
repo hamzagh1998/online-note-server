@@ -9,6 +9,8 @@ import {
 import { Response } from 'express';
 
 import { RegisterRequestBodyDto } from '../dto/register-user.req';
+import { LoginRequestBodyDto } from '../dto/login-user.req';
+
 import { AuthService } from '../services/auth.service';
 
 @Controller('auth')
@@ -31,7 +33,17 @@ export class AuthController {
   }
 
   @Post('login')
-  login(): string {
-    return 'hello';
+  @UsePipes(
+    new ValidationPipe({
+      transform: true,
+      whitelist: false,
+      forbidNonWhitelisted: false,
+    }),
+  )
+  async login(@Body() body: LoginRequestBodyDto, @Res() res: Response) {
+    const result = await this.authService.login(body);
+    const { statusCode, ...rest } = result;
+
+    return res.status(statusCode).json(rest);
   }
 }

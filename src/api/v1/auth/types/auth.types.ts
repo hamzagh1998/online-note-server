@@ -1,6 +1,6 @@
 import { HttpStatus } from '@nestjs/common';
 
-export type RegistedrUserDetailType = {
+export type RegistredUserDetailType = {
   firstName: string;
   lastName: string;
   email: string;
@@ -10,5 +10,5 @@ export type RegistedrUserDetailType = {
 export type RegisterResponseType = {
   error: boolean;
   statusCode: HttpStatus;
-  detail: RegistedrUserDetailType;
+  detail: RegistredUserDetailType;
 };

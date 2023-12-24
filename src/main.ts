@@ -1,7 +1,10 @@
+import { EventEmitter } from 'stream';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import * as admin from 'firebase-admin';
+
+EventEmitter.defaultMaxListeners = 20;
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { abortOnError: false });

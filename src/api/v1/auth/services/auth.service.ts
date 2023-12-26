@@ -1,8 +1,8 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 
-import { UserDocument } from 'src/database/schemas/user/user.schema';
+import { UserDocument } from 'src/database/models/user/user.schema';
 
-import { UserRepository } from 'src/database/schemas/user/user.repository';
+import { UserRepository } from 'src/database/models/user/user.repository';
 
 import { RegisterRequestBodyDto } from '../dto/register-user.req';
 import { LoginRequestBodyDto } from '../dto/login-user.req';

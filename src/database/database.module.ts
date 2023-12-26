@@ -1,32 +1,32 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 
-import { User, UserSchema } from './schemas/user/user.schema';
-import { UserRepository } from './schemas/user/user.repository';
+import { User, UserSchema } from './models/user/user.schema';
+import { UserRepository } from './models/user/user.repository';
 
 import {
   UserProfile,
   UserProfileSchema,
-} from './schemas/user-profile/user-profile.schema';
-import { UserProfileRepository } from './schemas/user-profile/user-profile.repository';
+} from './models/user-profile/user-profile.schema';
+import { UserProfileRepository } from './models/user-profile/user-profile.repository';
 
-import { PlanRepository } from './schemas/plan/plan.repository';
-import { Plan, PlanSchema } from './schemas/plan/plan.schema';
+import { PlanRepository } from './models/plan/plan.repository';
+import { Plan, PlanSchema } from './models/plan/plan.schema';
 
 import {
   GenericItem,
   GenericItemSchema,
-} from './schemas/generic-item/generic-item.schema';
-import { GenericItemRepository } from './schemas/generic-item/generic-item.repository';
+} from './models/generic-item/generic-item.schema';
+import { GenericItemRepository } from './models/generic-item/generic-item.repository';
 
-import { Folder, FolderSchema } from './schemas/folder/folder.schema';
-import { FolderRepository } from './schemas/folder/folder.repository';
+import { Folder, FolderSchema } from './models/folder/folder.schema';
+import { FolderRepository } from './models/folder/folder.repository';
 
-import { Note, NoteSchema } from './schemas/note/note.schema';
-import { NoteRepository } from './schemas/note/note.repository';
+import { Note, NoteSchema } from './models/note/note.schema';
+import { NoteRepository } from './models/note/note.repository';
 
-import { File, FileSchema } from './schemas/file/file.schema';
-import { FileRepository } from './schemas/file/file.repository';
+import { File, FileSchema } from './models/file/file.schema';
+import { FileRepository } from './models/file/file.repository';
 
 @Module({
   imports: [

@@ -4,7 +4,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 
 import { FirebaseAuthMiddleware } from './middlewares/firebase-auth.middleware';
 
-import { configuration } from './configuration';
+import { configuration } from './config';
 
 import { AuthModule } from './api/v1/auth/auth.module';
 

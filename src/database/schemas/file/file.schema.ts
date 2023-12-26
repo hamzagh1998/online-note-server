@@ -3,34 +3,31 @@ import { Document, Types } from 'mongoose';
 
 @Schema()
 export class File {
-  @Prop({ type: Types.ObjectId, ref: 'User' }) // Reference to the User model
+  @Prop({ type: Types.ObjectId, required: true, ref: 'User' }) // Reference to the User model
   owner: Types.ObjectId; // Store the user's ObjectId
 
-  @Prop({ type: Types.ObjectId, ref: 'Folder' }) // Reference to the Folder model
-  parentDirectory: Types.ObjectId; // Store the folder's ObjectId
-
-  @Prop({ default: 'file' })
+  @Prop({ default: 'file', required: true })
   type: string;
 
-  @Prop()
+  @Prop({ required: true })
   name: string;
 
-  @Prop()
+  @Prop({ required: true })
   ressourceLink: string;
 
-  @Prop()
+  @Prop({ required: true })
   extension: string;
 
-  @Prop({ default: false })
+  @Prop({ default: false, required: true })
   isShared: boolean;
 
-  @Prop({ default: false })
+  @Prop({ default: false, required: true })
   isFavorite: boolean;
 
-  @Prop({ default: null })
+  @Prop({ default: null, required: false })
   password: string | null;
 
-  @Prop({ default: () => new Date().toUTCString() }) // Set default value to current UTC date and time
+  @Prop({ default: () => new Date().toUTCString(), required: true }) // Set default value to current UTC date and time
   createdAt: Date;
 }
 

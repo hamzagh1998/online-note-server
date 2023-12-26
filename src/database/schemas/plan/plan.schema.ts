@@ -3,13 +3,18 @@ import { Document } from 'mongoose';
 
 @Schema()
 export class Plan {
-  @Prop({ type: String, enum: ['free', 'prmium'], default: 'free' })
+  @Prop({
+    type: String,
+    required: true,
+    enum: ['free', 'prmium'],
+    default: 'free',
+  })
   type: string;
 
-  @Prop({ default: 0 })
+  @Prop({ default: 0, required: true })
   price: number;
 
-  @Prop({ default: 500 })
+  @Prop({ default: 500, required: true })
   maxStorageUsageInMb: number;
 }
 

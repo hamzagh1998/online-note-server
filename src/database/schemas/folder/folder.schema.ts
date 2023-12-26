@@ -2,27 +2,24 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
 
 @Schema()
-export class Note {
+export class Folder {
   @Prop({ type: Types.ObjectId, ref: 'User' }) // Reference to the User model
   owner: Types.ObjectId; // Store the user's ObjectId
 
   @Prop({ type: Types.ObjectId, ref: 'Folder' }) // Reference to the Folder model
   parentDirectory: Types.ObjectId; // Store the folder's ObjectId
 
-  @Prop({ default: 'note' })
+  @Prop({ default: 'folder' })
   type: string;
 
   @Prop()
   name: string;
 
-  @Prop()
-  content: string;
-
-  @Prop({ default: false })
-  isShared: boolean;
-
   @Prop({ default: false })
   isFavorite: boolean;
+
+  @Prop({ type: Types.ObjectId, ref: 'GenericItem' })
+  children: Array<Types.ObjectId>;
 
   @Prop({ default: null })
   password: string | null;
@@ -34,6 +31,6 @@ export class Note {
   lastUpdate: Date | null;
 }
 
-export type NoteDocument = Note & Document;
+export type FolderDocument = Folder & Document;
 
-export const NoteSchema = SchemaFactory.createForClass(Note);
+export const FolderSchema = SchemaFactory.createForClass(Folder);

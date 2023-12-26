@@ -3,6 +3,11 @@ import { Document, FilterQuery, Model, UpdateQuery } from 'mongoose';
 export abstract class EntityRepository<T extends Document> {
   constructor(protected readonly entityModel: Model<T>) {}
 
+  async create(createEntityData: unknown): Promise<unknown> {
+    const entity = new this.entityModel(createEntityData);
+    return entity.save();
+  }
+
   async findOne(
     entityFilterQuery: FilterQuery<T>,
     projctions?: Record<string, unknown>,
@@ -25,11 +30,6 @@ export abstract class EntityRepository<T extends Document> {
         ...projctions,
       })
       .exec();
-  }
-
-  async create(createEntityData: unknown): Promise<unknown> {
-    const entity = new this.entityModel(createEntityData);
-    return entity.save();
   }
 
   async findOneAndUpdate(

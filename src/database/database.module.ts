@@ -32,8 +32,8 @@ import { FileRepository } from './models/file/file.repository';
   imports: [
     MongooseModule.forFeature([
       { name: User.name, schema: UserSchema },
-      { name: Plan.name, schema: PlanSchema },
       { name: UserProfile.name, schema: UserProfileSchema },
+      { name: Plan.name, schema: PlanSchema },
       { name: GenericItem.name, schema: GenericItemSchema },
       { name: Folder.name, schema: FolderSchema },
       { name: Note.name, schema: NoteSchema },

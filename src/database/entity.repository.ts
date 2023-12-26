@@ -48,7 +48,7 @@ export abstract class EntityRepository<T extends Document> {
     return deleteResult.deletedCount >= 1;
   }
 
-  async aggregate(entityPipeline: object[]): Promise<unknown[]> {
-    return this.entityModel.aggregate(entityPipeline as any).exec();
+  async aggregate(entityPipelineQuery: object[]): Promise<unknown[]> {
+    return this.entityModel.aggregate(entityPipelineQuery as any).exec();
   }
 }

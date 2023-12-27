@@ -4,11 +4,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from './models/user/user.schema';
 import { UserRepository } from './models/user/user.repository';
 
-import {
-  UserProfile,
-  UserProfileSchema,
-} from './models/user-profile/user-profile.schema';
-import { UserProfileRepository } from './models/user-profile/user-profile.repository';
+import { Profile, ProfileSchema } from './models/profile/profile.schema';
+import { ProfileRepository } from './models/profile/profile.repository';
 
 import { PlanRepository } from './models/plan/plan.repository';
 import { Plan, PlanSchema } from './models/plan/plan.schema';
@@ -32,7 +29,7 @@ import { FileRepository } from './models/file/file.repository';
   imports: [
     MongooseModule.forFeature([
       { name: User.name, schema: UserSchema },
-      { name: UserProfile.name, schema: UserProfileSchema },
+      { name: Profile.name, schema: ProfileSchema },
       { name: Plan.name, schema: PlanSchema },
       { name: GenericItem.name, schema: GenericItemSchema },
       { name: Folder.name, schema: FolderSchema },
@@ -42,7 +39,7 @@ import { FileRepository } from './models/file/file.repository';
   ],
   providers: [
     UserRepository,
-    UserProfileRepository,
+    ProfileRepository,
     PlanRepository,
     GenericItemRepository,
     FolderRepository,
@@ -51,7 +48,7 @@ import { FileRepository } from './models/file/file.repository';
   ],
   exports: [
     UserRepository,
-    UserProfileRepository,
+    ProfileRepository,
     PlanRepository,
     GenericItemRepository,
     FolderRepository,

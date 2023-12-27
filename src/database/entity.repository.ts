@@ -8,6 +8,18 @@ export abstract class EntityRepository<T extends Document> {
     return entity.save();
   }
 
+  // check if doc exists and return it if so
+  async checkAndCreate(
+    entityFilterQuery: FilterQuery<T>,
+    createEntityData: unknown,
+  ): Promise<unknown> {
+    const entityDoc = await this.entityModel.findOne(entityFilterQuery);
+    if (entityDoc) return entityDoc;
+
+    const entity = new this.entityModel(createEntityData);
+    return entity.save();
+  }
+
   async findOne(
     entityFilterQuery: FilterQuery<T>,
     projctions?: Record<string, unknown>,

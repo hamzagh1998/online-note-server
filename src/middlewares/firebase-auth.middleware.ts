@@ -19,7 +19,7 @@ export class FirebaseAuthMiddleware implements NestMiddleware {
 
     try {
       const decodedToken = await admin.auth().verifyIdToken(token);
-      req['user'] = decodedToken; // Attach the decoded user to the request
+      req.body.user = decodedToken; // Attach the decoded user to the request
       next();
     } catch (error) {
       return res.status(401).json(errorResBody);

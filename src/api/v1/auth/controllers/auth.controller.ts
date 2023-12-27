@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   Post,
   Res,
   UsePipes,
@@ -26,7 +27,7 @@ export class AuthController {
     }),
   )
   async register(@Body() body: RegisterRequestBodyDto, @Res() res: Response) {
-    const result = await this.authService.register(body);
+    const result = await this.authService.registerService(body);
     const { statusCode, ...rest } = result;
 
     return res.status(statusCode).json(rest);
@@ -41,7 +42,17 @@ export class AuthController {
     }),
   )
   async login(@Body() body: LoginRequestBodyDto, @Res() res: Response) {
-    const result = await this.authService.login(body);
+    const result = await this.authService.loginService(body);
+    const { statusCode, ...rest } = result;
+
+    return res.status(statusCode).json(rest);
+  }
+
+  @Get('user-data')
+  async auth(@Body() body, @Res() res: Response) {
+    const email = body.user.email;
+
+    const result = await this.authService.authService(email);
     const { statusCode, ...rest } = result;
 
     return res.status(statusCode).json(rest);

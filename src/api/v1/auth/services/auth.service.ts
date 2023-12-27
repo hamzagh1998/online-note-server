@@ -20,7 +20,7 @@ export class AuthService {
     private folderRepository: FolderRepository,
     private profileRepository: ProfileRepository,
   ) {}
-  async register(body: RegisterRequestBodyDto) {
+  async registerService(body: RegisterRequestBodyDto) {
     try {
       const { firstName, lastName, email, provider, photoURL } = body;
       const avatar =
@@ -70,13 +70,32 @@ export class AuthService {
     }
   }
 
-  async login(body: LoginRequestBodyDto | RegisterRequestBodyDto) {
+  async loginService(body: LoginRequestBodyDto | RegisterRequestBodyDto) {
     const { email, provider } = body;
     const user = await this.userRepo.findOne({ email });
     if (!user) {
       if (provider === 'google') {
-        return this.register(body as RegisterRequestBodyDto);
+        return this.registerService(body as RegisterRequestBodyDto);
       }
+      return {
+        error: true,
+        statusCode: HttpStatus.CONFLICT,
+        detail: "User with this email doesn't",
+      };
+    }
+
+    const result: RegistredUserDetailType = {
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      photoURL: user.photoURL,
+    };
+    return { error: false, statusCode: HttpStatus.OK, detail: result };
+  }
+
+  async authService(email: string) {
+    const user = await this.userRepo.findOne({ email });
+    if (!user) {
       return {
         error: true,
         statusCode: HttpStatus.CONFLICT,

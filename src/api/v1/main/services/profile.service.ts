@@ -3,7 +3,6 @@ import { HttpStatus, Injectable } from '@nestjs/common';
 import { UserRepository } from 'src/database/models/user/user.repository';
 import { ProfileRepository } from 'src/database/models/profile/profile.repository';
 import { PlanRepository } from 'src/database/models/plan/plan.repository';
-import { FolderRepository } from 'src/database/models/folder/folder.repository';
 import { ProfileResponseType } from '../types/profile.types';
 
 @Injectable()
@@ -11,7 +10,6 @@ export class ProfileService {
   constructor(
     private userRepo: UserRepository,
     private planRepository: PlanRepository,
-    private folderRepository: FolderRepository,
     private profileRepository: ProfileRepository,
   ) {}
 

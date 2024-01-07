@@ -3,6 +3,8 @@ import { HttpStatus, Injectable } from '@nestjs/common';
 import { UserRepository } from 'src/database/models/user/user.repository';
 import { ProfileRepository } from 'src/database/models/profile/profile.repository';
 import { PlanRepository } from 'src/database/models/plan/plan.repository';
+import { NotificationRepository } from 'src/database/models/notifictaions/notification.repository';
+
 import { ProfileResponseType } from '../types/profile.types';
 
 @Injectable()
@@ -11,6 +13,7 @@ export class ProfileService {
     private userRepo: UserRepository,
     private planRepository: PlanRepository,
     private profileRepository: ProfileRepository,
+    private notificationRepository: NotificationRepository,
   ) {}
 
   async infoService(email: string) {
@@ -18,17 +21,26 @@ export class ProfileService {
     if (!userDoc) {
       return {
         error: true,
-        statusCode: HttpStatus.CONFLICT,
-        detail: "User with this email doesn't",
+        statusCode: HttpStatus.NOT_FOUND,
+        detail: "User with this email doesn't exists",
       };
     }
 
     const profileDoc = await this.profileRepository.findOne({
       owner: userDoc._id,
     });
+
     const palnDoc = await this.planRepository.findOne({
       _id: profileDoc.plan,
     });
+
+    const notificationsDoc = await this.notificationRepository.find(
+      {
+        owner: userDoc._id,
+        viewed: false,
+      },
+      { _id: 0, owner: 0, viewedAt: 0, viewed: 0 },
+    );
 
     const result: ProfileResponseType = {
       plan: palnDoc.type as 'free' | 'primium',
@@ -37,8 +49,25 @@ export class ProfileService {
       subscriptionEndDate: profileDoc.subscriptionEndDate,
       subscriptionLastRenewalDate: profileDoc.subscriptionLastRenewalDate,
       storgeUsageInMb: profileDoc.storgeUsageInMb,
+      notifications: notificationsDoc,
     };
     return { error: false, statusCode: HttpStatus.OK, detail: result };
+  }
+
+  async notifService(id: string) {
+    try {
+      await this.notificationRepository.findOneAndUpdate(
+        { id },
+        { viewed: true, viewedAt: new Date().toUTCString() },
+      );
+      return { error: false, statusCode: HttpStatus.OK, detail: 'success' };
+    } catch (error) {
+      return {
+        error: false,
+        statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+        detail: 'Internal server error',
+      };
+    }
   }
 
   async updateService() {}

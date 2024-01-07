@@ -25,6 +25,15 @@ import { NoteRepository } from './models/note/note.repository';
 import { File, FileSchema } from './models/file/file.schema';
 import { FileRepository } from './models/file/file.repository';
 
+import { Report, ReportSchema } from './models/report/report.schema';
+import { ReportRepository } from './models/report/report.repository';
+
+import {
+  Notification,
+  NotificationSchema,
+} from './models/notifictaions/notification.schema';
+import { NotificationRepository } from './models/notifictaions/notification.repository';
+
 @Module({
   imports: [
     MongooseModule.forFeature([
@@ -35,6 +44,8 @@ import { FileRepository } from './models/file/file.repository';
       { name: Folder.name, schema: FolderSchema },
       { name: Note.name, schema: NoteSchema },
       { name: File.name, schema: FileSchema },
+      { name: Report.name, schema: ReportSchema },
+      { name: Notification.name, schema: NotificationSchema },
     ]),
   ],
   providers: [
@@ -45,6 +56,8 @@ import { FileRepository } from './models/file/file.repository';
     FolderRepository,
     NoteRepository,
     FileRepository,
+    ReportRepository,
+    NotificationRepository,
   ],
   exports: [
     UserRepository,
@@ -54,6 +67,8 @@ import { FileRepository } from './models/file/file.repository';
     FolderRepository,
     NoteRepository,
     FileRepository,
+    ReportRepository,
+    NotificationRepository,
   ],
 })
 export class DatabaseModule {}

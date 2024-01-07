@@ -15,6 +15,9 @@ export class User {
 
   @Prop({ required: true })
   email: string;
+
+  @Prop({ default: () => new Date().toUTCString(), required: true })
+  createdAt: Date;
 }
 
 export type UserDocument = User & Document;

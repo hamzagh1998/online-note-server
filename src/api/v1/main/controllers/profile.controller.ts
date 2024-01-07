@@ -17,6 +17,14 @@ export class ProfileController {
     return res.status(statusCode).json(rest);
   }
 
+  @Patch('notification')
+  async notification(@Body() body, @Res() res: Response) {
+    const result = await this.profileService.notifService(body);
+    const { statusCode, ...rest } = result;
+
+    return res.status(statusCode).json(rest);
+  }
+
   @Patch('update')
   async update() {}
 }

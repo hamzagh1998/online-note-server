@@ -2,14 +2,14 @@ import {
   Body,
   Controller,
   Get,
-  Post,
+  // Post,
   Res,
-  UsePipes,
-  ValidationPipe,
+  // UsePipes,
+  // ValidationPipe,
 } from '@nestjs/common';
 import { Response } from 'express';
 
-import { CreateFolderRequestDto } from '../dto/create-folder.req';
+// import { CreateFolderRequestDto } from '../dto/create-folder.req';
 
 import { FolderService } from '../services/folder.service';
 
@@ -27,21 +27,21 @@ export class FolderController {
     return res.status(statusCode).json(rest);
   }
 
-  @Post('create-folder')
-  @UsePipes(
-    new ValidationPipe({
-      transform: true,
-      whitelist: false,
-      forbidNonWhitelisted: false,
-    }),
-  )
-  async createFilder(
-    @Body() body: CreateFolderRequestDto,
-    @Res() res: Response,
-  ) {
-    const result = await this.folderService.createFolderService(body);
-    const { statusCode, ...rest } = result;
+  // @Post('create-folder')
+  // @UsePipes(
+  //   new ValidationPipe({
+  //     transform: true,
+  //     whitelist: false,
+  //     forbidNonWhitelisted: false,
+  //   }),
+  // )
+  // async createFilder(
+  //   @Body() body: CreateFolderRequestDto,
+  //   @Res() res: Response,
+  // ) {
+  //   const result = await this.folderService.createFolderService(body);
+  //   const { statusCode, ...rest } = result;
 
-    return res.status(statusCode).json(rest);
-  }
+  //   return res.status(statusCode).json(rest);
+  // }
 }

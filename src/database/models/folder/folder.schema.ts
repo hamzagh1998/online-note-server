@@ -9,13 +9,21 @@ export class Folder {
   @Prop({ default: 'folder', required: true })
   type: string;
 
-  @Prop({ default: 'home', required: true })
+  @Prop({ default: 'root', required: true })
   name: string;
+
+  @Prop({ default: false, required: false })
+  isRoot: boolean;
 
   @Prop({ default: false, required: true })
   isFavorite: boolean;
 
-  @Prop({ type: Types.ObjectId, default: [], required: false, ref: 'Folder' })
+  @Prop({
+    type: Types.ObjectId,
+    default: null,
+    required: false,
+    ref: 'GenericItem',
+  })
   parentDirectory: Types.ObjectId;
 
   @Prop({

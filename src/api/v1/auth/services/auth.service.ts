@@ -47,7 +47,7 @@ export class AuthService {
 
       await this.folderRepository.checkAndCreate(
         { owner: userDoc._id },
-        { owner: userDoc._id },
+        { owner: userDoc._id, isRoot: true },
       );
       await this.profileRepository.checkAndCreate(
         { owner: userDoc._id },

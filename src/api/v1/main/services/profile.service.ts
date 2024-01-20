@@ -6,12 +6,14 @@ import { PlanRepository } from 'src/database/models/plan/plan.repository';
 import { NotificationRepository } from 'src/database/models/notifictaions/notification.repository';
 
 import { ProfileResponseType } from '../types/profile.types';
+import { FolderRepository } from 'src/database/models/folder/folder.repository';
 
 @Injectable()
 export class ProfileService {
   constructor(
     private userRepo: UserRepository,
     private planRepository: PlanRepository,
+    private folderRepository: FolderRepository,
     private profileRepository: ProfileRepository,
     private notificationRepository: NotificationRepository,
   ) {}
@@ -25,6 +27,11 @@ export class ProfileService {
         detail: "User with this email doesn't exists",
       };
     }
+
+    const folderDoc = await this.folderRepository.findOne({
+      owner: userDoc._id,
+      isRoot: true,
+    });
 
     const profileDoc = await this.profileRepository.findOne({
       owner: userDoc._id,
@@ -45,6 +52,12 @@ export class ProfileService {
     const result: ProfileResponseType = {
       plan: palnDoc.type as 'free' | 'primium',
       isPremium: profileDoc.isPremium,
+      currentFolder: {
+        id: folderDoc._id,
+        folderName: folderDoc.name,
+        parentDirectory: folderDoc.parentDirectory,
+        children: folderDoc.children,
+      },
       subscriptionStartDate: profileDoc.subscriptionStartDate,
       subscriptionEndDate: profileDoc.subscriptionEndDate,
       subscriptionLastRenewalDate: profileDoc.subscriptionLastRenewalDate,

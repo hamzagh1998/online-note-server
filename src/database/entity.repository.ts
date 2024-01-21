@@ -3,7 +3,7 @@ import { Document, FilterQuery, Model, UpdateQuery } from 'mongoose';
 export abstract class EntityRepository<T extends Document> {
   constructor(protected readonly entityModel: Model<T>) {}
 
-  async create(createEntityData: unknown): Promise<unknown> {
+  async create(createEntityData: unknown): Promise<T> {
     const entity = new this.entityModel(createEntityData);
     return entity.save();
   }
@@ -12,7 +12,7 @@ export abstract class EntityRepository<T extends Document> {
   async checkAndCreate(
     entityFilterQuery: FilterQuery<T>,
     createEntityData: unknown,
-  ): Promise<unknown> {
+  ): Promise<T> {
     const entityDoc = await this.entityModel.findOne(entityFilterQuery);
     if (entityDoc) return entityDoc;
 

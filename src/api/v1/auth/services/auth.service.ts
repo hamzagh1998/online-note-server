@@ -1,5 +1,4 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
-import { v4 as uuidv4 } from 'uuid';
 
 import { UserDocument } from 'src/database/models/user/user.schema';
 
@@ -11,8 +10,11 @@ import { RegistredUserDetailType } from '../types/auth.types';
 import { UserRepository } from 'src/database/models/user/user.repository';
 import { PlanRepository } from 'src/database/models/plan/plan.repository';
 import { FolderRepository } from 'src/database/models/folder/folder.repository';
+import { GenericItemRepository } from 'src/database/models/generic-item/generic-item.repository';
 import { ProfileRepository } from 'src/database/models/profile/profile.repository';
 import { NotificationRepository } from 'src/database/models/notifictaions/notification.repository';
+import { FolderDocument } from 'src/database/models/folder/folder.schema';
+import { capitalizer } from 'src/utils/capitalizer';
 
 @Injectable()
 export class AuthService {
@@ -20,6 +22,7 @@ export class AuthService {
     private userRepo: UserRepository,
     private planRepository: PlanRepository,
     private folderRepository: FolderRepository,
+    private genericItemRepo: GenericItemRepository,
     private profileRepository: ProfileRepository,
     private notificationRepository: NotificationRepository,
   ) {}
@@ -45,10 +48,19 @@ export class AuthService {
 
       const planDoc = await this.planRepository.findOne({ type: 'free' }); // Default free plan
 
-      await this.folderRepository.checkAndCreate(
-        { owner: userDoc._id },
-        { owner: userDoc._id, isRoot: true },
-      );
+      const folderDoc: FolderDocument =
+        await this.folderRepository.checkAndCreate(
+          { owner: userDoc._id },
+          { owner: userDoc._id, isRoot: true },
+        );
+
+      await this.genericItemRepo.create({
+        owner: userDoc._id,
+        name: folderDoc.name,
+        type: 'folder',
+        itemId: folderDoc._id,
+      });
+
       await this.profileRepository.checkAndCreate(
         { owner: userDoc._id },
         {
@@ -58,10 +70,11 @@ export class AuthService {
       );
 
       const notification = {
-        id: uuidv4(),
         owner: userDoc._id,
-        title: 'Greeting 👋',
-        content: `Hello ${userDoc.firstName} We are thrilled to welcome you to OnlineNote. Your account is now set up and ready for you to explore and take notes. Happy noting 😉`,
+        title: 'Greetings 👋',
+        content: `Hello ${capitalizer(
+          userDoc.firstName,
+        )} We are thrilled to welcome you to OnlineNote. Your account is now set up and ready for you to explore and take notes. Happy noting 😉`,
       };
       await this.notificationRepository.create(notification);
 

@@ -7,9 +7,6 @@ export class Notification {
   owner: Types.ObjectId; // Store the user's ObjectId
 
   @Prop({ required: true })
-  id: string;
-
-  @Prop({ required: true })
   title: string;
 
   @Prop({ required: true })

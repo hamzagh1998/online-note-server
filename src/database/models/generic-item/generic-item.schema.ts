@@ -6,8 +6,19 @@ export class GenericItem {
   @Prop({ type: Types.ObjectId, required: true, ref: 'User' }) // Reference to the User model
   owner: Types.ObjectId; // Store the user's ObjectId
 
-  @Prop({ type: Types.ObjectId, required: true, ref: 'Folder' }) // Reference to the Folder model
-  parentDirectory: Types.ObjectId; // Store the folder's ObjectId
+  @Prop({ default: 'root', required: true })
+  name: string;
+
+  @Prop({
+    type: Types.ObjectId,
+    default: null,
+    required: false,
+    ref: 'GenericItem',
+  }) // Reference to the GenericItem model
+  parentDirectory: Types.ObjectId; // Store the GenericItem's ObjectId
+
+  @Prop({ default: false, required: false })
+  isPrivate: boolean;
 
   @Prop({ type: String, required: true, enum: ['folder', 'note', 'file'] })
   type: 'folder' | 'note' | 'file';

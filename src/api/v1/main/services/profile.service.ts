@@ -7,6 +7,7 @@ import { NotificationRepository } from 'src/database/models/notifictaions/notifi
 
 import { ProfileResponseType } from '../types/profile.types';
 import { FolderRepository } from 'src/database/models/folder/folder.repository';
+import { GenericItemRepository } from 'src/database/models/generic-item/generic-item.repository';
 
 @Injectable()
 export class ProfileService {
@@ -14,6 +15,7 @@ export class ProfileService {
     private userRepo: UserRepository,
     private planRepository: PlanRepository,
     private folderRepository: FolderRepository,
+    private genericItemRepo: GenericItemRepository,
     private profileRepository: ProfileRepository,
     private notificationRepository: NotificationRepository,
   ) {}
@@ -31,6 +33,11 @@ export class ProfileService {
     const folderDoc = await this.folderRepository.findOne({
       owner: userDoc._id,
       isRoot: true,
+    });
+
+    const genericItemDoc = await this.genericItemRepo.findOne({
+      owner: userDoc._id,
+      itemId: folderDoc._id,
     });
 
     const profileDoc = await this.profileRepository.findOne({
@@ -53,7 +60,7 @@ export class ProfileService {
       plan: palnDoc.type as 'free' | 'primium',
       isPremium: profileDoc.isPremium,
       currentFolder: {
-        id: folderDoc._id,
+        id: genericItemDoc._id,
         folderName: folderDoc.name,
         parentDirectory: folderDoc.parentDirectory,
         children: folderDoc.children,

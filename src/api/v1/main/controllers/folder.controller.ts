@@ -49,6 +49,7 @@ export class FolderController {
     @Res() res: Response,
   ) {
     const result = await this.folderService.createFolderService(body);
+
     const { statusCode, ...rest } = result;
 
     return res.status(statusCode).json(rest);

@@ -26,8 +26,6 @@ export class FolderService {
   ) {}
 
   async getFolderDataService(email: string, gItemId: string) {
-    console.log(email, gItemId);
-
     await this.checkUser(email);
     if (this.error)
       return {
@@ -115,6 +113,7 @@ export class FolderService {
           name: newFolderDoc.name,
           parentDirectory: new Types.ObjectId(parentDirectory),
           isPrivate: newFolderDoc.password !== null,
+          isFavorite: newFolderDoc.isFavorite,
           type: 'folder',
           itemId: new Types.ObjectId(newFolderDoc._id),
         });
@@ -128,7 +127,7 @@ export class FolderService {
           $addToSet: { children: new Types.ObjectId(genericItemDoc._id) },
         },
       );
-      await this.getFolderDataService(this.user.email, parentDirectory);
+      return await this.getFolderDataService(this.user.email, parentDirectory);
     } catch (error) {
       return {
         error: false,

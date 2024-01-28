@@ -17,6 +17,9 @@ export class GenericItem {
   }) // Reference to the GenericItem model
   parentDirectory: Types.ObjectId; // Store the GenericItem's ObjectId
 
+  @Prop({ default: false, required: true })
+  isFavorite: boolean;
+
   @Prop({ default: false, required: false })
   isPrivate: boolean;
 

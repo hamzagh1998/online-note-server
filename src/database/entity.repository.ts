@@ -5,7 +5,8 @@ export abstract class EntityRepository<T extends Document> {
 
   async create(createEntityData: unknown): Promise<T> {
     const entity = new this.entityModel(createEntityData);
-    return entity.save();
+    const savedEntity = await entity.save();
+    return savedEntity.toObject({ versionKey: false });
   }
 
   // check if doc exists and return it if so

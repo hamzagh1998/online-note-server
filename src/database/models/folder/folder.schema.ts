@@ -6,9 +6,6 @@ export class Folder {
   @Prop({ type: Types.ObjectId, required: true, ref: 'User' }) // Reference to the User model
   owner: Types.ObjectId; // Store the user's ObjectId
 
-  @Prop({ default: 'folder', required: true })
-  type: string;
-
   @Prop({ default: 'root', required: true })
   name: string;
 

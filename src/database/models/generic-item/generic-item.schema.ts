@@ -17,7 +17,7 @@ export class GenericItem {
   }) // Reference to the GenericItem model
   parentDirectory: Types.ObjectId; // Store the GenericItem's ObjectId
 
-  @Prop({ default: false, required: true })
+  @Prop({ default: false, required: false })
   isFavorite: boolean;
 
   @Prop({ default: false, required: false })
@@ -25,6 +25,9 @@ export class GenericItem {
 
   @Prop({ type: String, required: true, enum: ['folder', 'note', 'file'] })
   type: 'folder' | 'note' | 'file';
+
+  @Prop({ default: undefined, required: false })
+  fileType: string | undefined;
 
   @Prop({ type: Types.ObjectId, required: true })
   itemId: Types.ObjectId;

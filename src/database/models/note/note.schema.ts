@@ -7,27 +7,30 @@ export class Note {
   owner: Types.ObjectId; // Store the user's ObjectId
 
   @Prop({ type: Types.ObjectId, required: true, ref: 'Folder' }) // Reference to the Folder model
-  parentDirectory: Types.ObjectId; // Store the folder's ObjectId
-
-  @Prop({ default: 'note', required: true })
-  type: string;
+  parentDirectory: Types.ObjectId; // Store the genericItem's ObjectId
 
   @Prop({ required: true })
-  name: string;
+  title: string;
 
   @Prop({ required: true })
   content: string;
 
-  @Prop({ default: false, required: true })
+  @Prop({ required: true })
+  ressourceLinks: Array<{ url: string; fileSizeMB: number }>;
+
+  @Prop({ required: true })
+  fileSizeMB: number;
+
+  @Prop({ default: false, required: false })
   isShared: boolean;
 
-  @Prop({ default: false, required: true })
+  @Prop({ default: false, required: false })
   isFavorite: boolean;
 
   @Prop({ default: null, required: false })
   password: string | null;
 
-  @Prop({ default: () => new Date().toUTCString(), required: true }) // Set default value to current UTC date and time
+  @Prop({ default: () => new Date().toUTCString(), required: false }) // Set default value to current UTC date and time
   createdAt: Date;
 
   @Prop({ default: null, required: false })

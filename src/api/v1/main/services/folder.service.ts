@@ -4,35 +4,27 @@ import * as bcrypt from 'bcrypt';
 import { UserRepository } from 'src/database/models/user/user.repository';
 import { FolderRepository } from 'src/database/models/folder/folder.repository';
 import { GenericItemRepository } from 'src/database/models/generic-item/generic-item.repository';
-import { UserDocument } from 'src/database/models/user/user.schema';
 import { FolderDocument } from 'src/database/models/folder/folder.schema';
 import { GenericItemDocument } from 'src/database/models/generic-item/generic-item.schema';
 
 import { CreateFolderRequestDto } from '../dto/create-folder.req';
 import { Types } from 'mongoose';
+import { Base } from './base';
 
 @Injectable()
-export class FolderService {
-  private error: boolean = false;
-  private statusCode: HttpStatus;
-  private detail: string | object;
-
-  private user: UserDocument;
-
+export class FolderService extends Base {
   constructor(
-    private userRepo: UserRepository,
+    public userRepo: UserRepository,
     private folderRepo: FolderRepository,
     private genericItemRepo: GenericItemRepository,
-  ) {}
+  ) {
+    super(userRepo);
+  }
 
   async getFolderDataService(email: string, gItemId: string) {
     await this.checkUser(email);
     if (this.error)
-      return {
-        error: this.error,
-        statusCode: this.statusCode,
-        detail: this.detail,
-      };
+      return this.result(this.error, this.statusCode, this.detail);
 
     try {
       const genericItemDoc: GenericItemDocument =
@@ -58,27 +50,23 @@ export class FolderService {
           _id: folderDoc.children,
         });
 
-      return {
-        error: false,
-        statusCode: HttpStatus.OK,
-        detail: {
-          id: folderDoc._id,
-          folderName: folderDoc.name,
-          parentDirectory: genericItemParentDoc
-            ? {
-                id: genericItemParentDoc._id,
-                name: genericItemParentDoc ? genericItemParentDoc.name : null,
-              }
-            : null,
-          children: childrenItemsDoc,
-        },
-      };
+      return this.result(false, HttpStatus.OK, {
+        id: folderDoc._id,
+        folderName: folderDoc.name,
+        parentDirectory: genericItemParentDoc
+          ? {
+              id: genericItemParentDoc._id,
+              name: genericItemParentDoc ? genericItemParentDoc.name : null,
+            }
+          : null,
+        children: childrenItemsDoc,
+      });
     } catch (error) {
-      return {
-        error: false,
-        statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
-        detail: 'Failed to fetch folder data!',
-      };
+      return this.result(
+        false,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+        'Failed to fetch folder data!',
+      );
     }
   }
 
@@ -87,11 +75,7 @@ export class FolderService {
 
     await this.checkUser(user.email);
     if (this.error)
-      return {
-        error: this.error,
-        statusCode: this.statusCode,
-        detail: this.detail,
-      };
+      return this.result(this.error, this.statusCode, this.detail);
 
     try {
       const parentFolder: GenericItemDocument =
@@ -129,42 +113,19 @@ export class FolderService {
       );
       return await this.getFolderDataService(this.user.email, parentDirectory);
     } catch (error) {
-      return {
-        error: false,
-        statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
-        detail: 'Failed',
-      };
+      return this.result(false, HttpStatus.INTERNAL_SERVER_ERROR, 'Failed');
     }
   }
 
-  private async checkUser(email: string) {
-    try {
-      const userDoc = await this.userRepo.findOne({ email });
-      if (!userDoc) {
-        this.result(
-          true,
-          HttpStatus.NOT_FOUND,
-          "User with this email doesn't exist!",
-        );
-      }
-      this.user = userDoc;
-      this.result(false, HttpStatus.OK, userDoc);
-    } catch (error) {
-      this.result(
-        true,
-        HttpStatus.INTERNAL_SERVER_ERROR,
-        'Internal Server Error!',
-      );
-    }
-  }
-
-  private result(
-    error: boolean,
-    statusCode: HttpStatus,
-    detail: string | object,
-  ) {
-    this.error = error;
-    this.statusCode = statusCode;
-    this.detail = detail;
-  }
+  // async deleteFolderService(itemId: string) {
+  //   try {
+  //     // const isDeleted = await this.
+  //   } catch (error) {
+  //     this.result(
+  //       true,
+  //       HttpStatus.INTERNAL_SERVER_ERROR,
+  //       'Internal Server Error!',
+  //     );
+  //   }
+  // }
 }

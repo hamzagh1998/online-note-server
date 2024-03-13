@@ -6,8 +6,8 @@ export class File {
   @Prop({ type: Types.ObjectId, required: true, ref: 'User' }) // Reference to the User model
   owner: Types.ObjectId; // Store the user's ObjectId
 
-  @Prop({ default: 'file', required: true })
-  type: string;
+  @Prop({ default: undefined, required: false })
+  fileType: string | undefined;
 
   @Prop({ required: true })
   name: string;
@@ -16,12 +16,15 @@ export class File {
   ressourceLink: string;
 
   @Prop({ required: true })
-  extension: string;
+  extension: string | undefined;
 
-  @Prop({ default: false, required: true })
+  @Prop({ required: true })
+  fileSizeMB: number;
+
+  @Prop({ default: false, required: false })
   isShared: boolean;
 
-  @Prop({ default: false, required: true })
+  @Prop({ default: false, required: false })
   isFavorite: boolean;
 
   @Prop({ default: null, required: false })

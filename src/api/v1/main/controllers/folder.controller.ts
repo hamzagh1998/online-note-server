@@ -44,7 +44,7 @@ export class FolderController {
       forbidNonWhitelisted: false,
     }),
   )
-  async createFilder(
+  async createFolder(
     @Body() body: CreateFolderRequestDto,
     @Res() res: Response,
   ) {
@@ -54,4 +54,12 @@ export class FolderController {
 
     return res.status(statusCode).json(rest);
   }
+
+  // async deleteFolder(@Query('gItemId') gItemId: string, @Res() res: Response) {
+  //   const result = await this.folderService.deleteFolderService(gItemId);
+
+  //   const { statusCode, ...rest } = result;
+
+  //   return res.status(statusCode).json(rest);
+  // }
 }
